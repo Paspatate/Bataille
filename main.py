@@ -28,6 +28,18 @@ class parti:
         self.joueur1 = jeu1
         self.joueur2 = jeu2
     
+    def distribution(self):
+        for j in range (len(cartes)):
+            if j%2 ==0 :
+                self.joueur1.enfiler(cartes.pop())
+            else :
+                self.joueur2.enfiler(cartes.pop())
+
+    def __str__(self):
+        return print(self.joueur1)
+    
+    
+    
     def tour(self):
         pile_centrale = Pile()
 
@@ -58,14 +70,14 @@ class parti:
                 self.joueur2.enfiler(pile_centrale.depiler())
         else:
             raise SystemError("personne n'a gagner le tour tu n'a rien a faire la")
-
-        def game_loop(self):
-            #distribuer les carte
-            while self.joueur1.est_vide() or self.joueur2.est_vide():
-                self.tour()
-            
-            if self.joueur1.est_vide():
-                return "Joueur 2 Gagne"
-            else:
-                return "joueur 1 Gagne"
+    
+    def game_loop(self):
+        #distribuer les carte
+        while self.joueur1.est_vide() or self.joueur2.est_vide():
+            self.tour()
+        
+        if self.joueur1.est_vide():
+            return "Joueur 2 Gagne"
+        else:
+            return "joueur 1 Gagne"
 
