@@ -11,13 +11,13 @@ class Carte:
         self.valeur = v
         self.symbole = s
     def __str__(self) -> str:
-        return f"valeur : {self.valeur},  signe :, {self.signe}"
+        return f"valeur : {self.valeur},  signe :, {self.symbole}"
 
 #création d'une liste de carte mélanger
 cartes = []
 
 for i in range(1,5):
-    for j in range(2,14):
+    for j in range(2,15):
         cartes.append(Carte(j,symbole[i]))
 print(len(cartes))
 random.shuffle(cartes)
