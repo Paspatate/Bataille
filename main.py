@@ -1,4 +1,4 @@
-from _typeshed import Self
+#from _typeshed import Self
 import random
 from file import File
 from pile import Pile
@@ -11,7 +11,7 @@ class Carte:
         self.valeur = v
         self.symbole = s
     def __str__(self) -> str:
-        return f"valeur : {self.valeur},  signe :, {self.symbole}"
+        return f"valeur :{self.valeur}  symbole :{self.symbole} "
 
 #création d'une liste de carte mélanger
 cartes = []
@@ -21,14 +21,15 @@ for i in range(1,5):
         cartes.append(Carte(j,symbole[i]))
 print(len(cartes))
 random.shuffle(cartes)
-print(cartes[3])
+
 
 class parti:
-    def __init__(self, jeu1, jeu2) -> None:
-        self.joueur1 = jeu1
-        self.joueur2 = jeu2
-    
+    def __init__(self) -> None:
+        self.joueur1 = File()
+        self.joueur2 = File()
+
     def distribution(self):
+        print("distribution")
         for j in range (len(cartes)):
             if j%2 ==0 :
                 self.joueur1.enfiler(cartes.pop())
@@ -37,47 +38,86 @@ class parti:
 
     def __str__(self):
         return print(self.joueur1)
-    
-    
-    
+
+    def action_jeu(self,pile_centrale):
+        j1_carte = Carte(0,0)
+        j2_carte = Carte(0,0)
+
+        j1_carte = self.joueur1.defiler()
+        pile_centrale.empiler(j1_carte)
+
+        j2_carte = self.joueur2.defiler()
+        pile_centrale.empiler(j2_carte)
+
+        return (j1_carte,j2_carte)
+
     def tour(self):
         pile_centrale = Pile()
 
-        j1_carte = self.joueur1.defiler()
-        j2_carte = self.joueur2.defiler()
+        #j1_carte = self.joueur1.defiler()
+        #j2_carte = self.joueur2.defiler()
 
-        pile_centrale.empiler(j1_carte)
-        pile_centrale.empiler(j2_carte)
+        #pile_centrale.empiler(j1_carte)
+        #pile_centrale.empiler(j2_carte)
+        try:
+            j1_carte, j2_carte = self.action_jeu(pile_centrale)
+        except:
+            return
 
-        while j1_carte.valeur == j2_carte.valeur and not self.joueur1.est_vide() and not self.joueur2.est_vide():
-            j1_carte = self.joueur1.defiler()
-            j2_carte = self.joueur2.defiler()
+        while j1_carte.valeur == j2_carte.valeur and not len(self.joueur1) == 0 and not len(self.joueur2) == 0:
+            print("égalité")
+            #j1_carte = self.joueur1.defiler()
+            #j2_carte = self.joueur2.defiler()
 
-            pile_centrale.empiler(j1_carte)
-            pile_centrale.empiler(j2_carte)
+            #pile_centrale.empiler(j1_carte)
+            #pile_centrale.empiler(j2_carte)
 
-            j1_carte = self.joueur1.defiler()
-            j2_carte = self.joueur2.defiler()
+            try:
+                j1_carte, j2_carte = self.action_jeu(pile_centrale)
+            except:
+                return
 
-            pile_centrale.empiler(j1_carte)
-            pile_centrale.empiler(j2_carte)
-        
-        if j1_carte < j2_carte:
-            for i in len(pile_centrale):
+            #j1_carte = self.joueur1.defiler()
+            #j2_carte = self.joueur2.defiler()
+
+            #pile_centrale.empiler(j1_carte)
+            #pile_centrale.empiler(j2_carte)
+
+            try:
+                j1_carte, j2_carte = self.action_jeu(pile_centrale)
+            except:
+                return
+
+            print("len pile_centrale ",len(pile_centrale))
+
+        if j1_carte.valeur < j2_carte.valeur:
+            print("joueur 2 gagne la manche")
+            for i in range(len(pile_centrale)):
                 self.joueur1.enfiler(pile_centrale.depiler())
-        elif j2_carte < j1_carte:
-            for i in len(pile_centrale):
+        elif j2_carte.valeur < j1_carte.valeur:
+            print("joueur 1 gagne la manche")
+            for i in range(len(pile_centrale)):
                 self.joueur2.enfiler(pile_centrale.depiler())
         else:
+            return
             raise SystemError("personne n'a gagner le tour tu n'a rien a faire la")
-    
+
     def game_loop(self):
-        #distribuer les carte
-        while self.joueur1.est_vide() or self.joueur2.est_vide():
+        print("1")
+        self.distribution()
+        print("2")
+        print(f" post tour len joueur1 {len(self.joueur1)} len joueur2 {len(self.joueur2)}")
+
+        while not len(self.joueur1) == 0 and not len(self.joueur2) == 0:
+            print(f"len joueur1 {len(self.joueur1)} len joueur2 {len(self.joueur2)}")
             self.tour()
-        
-        if self.joueur1.est_vide():
+
+
+        if len(self.joueur1) == 0:
             return "Joueur 2 Gagne"
         else:
             return "joueur 1 Gagne"
+game = parti()
 
+print(game.game_loop())
+print(f"len joueur1 {len(game.joueur1)} len joueur2 {len(game.joueur2)}")
