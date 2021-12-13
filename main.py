@@ -23,13 +23,14 @@ for i in range(1,5):
         cartes.append(Carte(j,symbole[i]))
 random.shuffle(cartes)
 
+#création d'une classe qui créer la partie
 class parti:
     def __init__(self) -> None:
         self.joueur1 = File()
         self.joueur2 = File()
         self.nbr_tour= 0
 
-
+#Méthode pour distibuer l'ensemble des cartes aux 2 joueurs
     def distribution(self):
         for j in range (len(cartes)):
             if j%2 ==0 :
@@ -37,9 +38,11 @@ class parti:
             else :
                 self.joueur2.enfiler(cartes.pop())
 
+#affiche les cartes du joueur 1 et du joueur 2         
     def __str__(self):
-        return print(self.joueur1)
+        return print("Joueur 1 : "self.joueur1, "/n Joueur 2 : "self.joueur2)
 
+#empile les cartes dans une pile centrale
     def action_jeu(self,pile_centrale):
         j1_carte = Carte(0,0)
         j2_carte = Carte(0,0)
@@ -52,6 +55,7 @@ class parti:
 
         return (j1_carte,j2_carte)
 
+#fait un tour de jeu    
     def tour(self):
         pile_centrale = Pile()
         
@@ -98,7 +102,7 @@ class parti:
         else:
             return
             raise SystemError("personne n'a gagner le tour tu n'a rien a faire la")
-
+#définit le déroulement d'une partie
     def game_loop(self):
         self.distribution()
 
