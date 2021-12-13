@@ -38,9 +38,9 @@ class parti:
             else :
                 self.joueur2.enfiler(cartes.pop())
 
-#affiche les cartes du joueur 1 et du joueur 2         
+#affiche les cartes du joueur 1 et du joueur 2
     def __str__(self):
-        return print("Joueur 1 : "self.joueur1, "/n Joueur 2 : "self.joueur2)
+        return print("Joueur 1 : ",self.joueur1, "/n Joueur 2 : ",self.joueur2)
 
 #empile les cartes dans une pile centrale
     def action_jeu(self,pile_centrale):
@@ -55,10 +55,10 @@ class parti:
 
         return (j1_carte,j2_carte)
 
-#fait un tour de jeu    
+#fait un tour de jeu
     def tour(self):
         pile_centrale = Pile()
-        
+
         try:
             j1_carte, j2_carte = self.action_jeu(pile_centrale)
         except:
@@ -121,4 +121,3 @@ class parti:
 game = parti()
 
 print(game.game_loop())
-
