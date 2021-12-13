@@ -28,10 +28,13 @@ class parti:
     def __init__(self) -> None:
         self.joueur1 = File()
         self.joueur2 = File()
-        self.nbr_tour= 0
+        self.nbr_tour = 0
+        self.j1_carte = Carte(0,0)
+        self.j2_carte = Carte(0,0)
 
 #Méthode pour distibuer l'ensemble des cartes aux 2 joueurs
     def distribution(self):
+        #print("distribution")
         for j in range (len(cartes)):
             if j%2 ==0 :
                 self.joueur1.enfiler(cartes.pop())
@@ -47,22 +50,25 @@ class parti:
         j1_carte = Carte(0,0)
         j2_carte = Carte(0,0)
 
-        j1_carte = self.joueur1.defiler()
-        pile_centrale.empiler(j1_carte)
+        self.j1_carte = self.joueur1.defiler()
+        pile_centrale_j1.empiler(self.j1_carte)
 
-        j2_carte = self.joueur2.defiler()
-        pile_centrale.empiler(j2_carte)
+        self.j2_carte = self.joueur2.defiler()
+        pile_centrale_j2.empiler(self.j2_carte)
 
-        return (j1_carte,j2_carte)
+        return (self.j1_carte,self.j2_carte)
 
 #fait un tour de jeu
     def tour(self):
-        pile_centrale = Pile()
+        pile_centrale_j1 = Pile()
+        pile_centrale_j2 = Pile()
 
         try:
-            j1_carte, j2_carte = self.action_jeu(pile_centrale)
+            j1_carte, j2_carte = self.action_jeu(pile_centrale_j1,pile_centrale_j2)
         except:
             return
+
+        if j1_carte.valeur == j2_carte.valeur:
 
         while j1_carte.valeur == j2_carte.valeur and not len(self.joueur1) == 0 and not len(self.joueur2) == 0:
             print(f"Tour {self.nbr_tour}:\nJoueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
@@ -120,4 +126,5 @@ class parti:
             return "joueur 1 Gagne!!!!!!!!!!!!!!!!!!!"
 game = parti()
 
-print(game.game_loop())
+#print(game.game_loop())
+#print(f"len joueur1 {len(game.joueur1)} len joueur2 {len(game.joueur2)}")
