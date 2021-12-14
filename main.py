@@ -32,6 +32,7 @@ class parti:
         self.j1_carte = Carte(0,0)
         self.j2_carte = Carte(0,0)
 
+        self.state = 0
 #Méthode pour distibuer l'ensemble des cartes aux 2 joueurs
     def distribution(self):
         #print("distribution")
@@ -46,65 +47,65 @@ class parti:
         return print("Joueur 1 : ",self.joueur1, "/n Joueur 2 : ",self.joueur2)
 
 #empile les cartes dans une pile centrale
-    def action_jeu(self,pile_centrale):
+    def action_jeu(self):
         j1_carte = Carte(0,0)
         j2_carte = Carte(0,0)
 
         self.j1_carte = self.joueur1.defiler()
-        pile_centrale_j1.empiler(self.j1_carte)
+        self.pile_centrale.empiler(self.j1_carte)
 
         self.j2_carte = self.joueur2.defiler()
-        pile_centrale_j2.empiler(self.j2_carte)
+        self.pile_centrale.empiler(self.j2_carte)
 
         return (self.j1_carte,self.j2_carte)
 
 #fait un tour de jeu
     def tour(self):
-        pile_centrale_j1 = Pile()
-        pile_centrale_j2 = Pile()
+        self.pile_centrale = Pile()
 
         try:
-            j1_carte, j2_carte = self.action_jeu(pile_centrale_j1,pile_centrale_j2)
+            j1_carte, j2_carte = self.action_jeu()
         except:
             return
 
         if j1_carte.valeur == j2_carte.valeur:
 
-        while j1_carte.valeur == j2_carte.valeur and not len(self.joueur1) == 0 and not len(self.joueur2) == 0:
-            print(f"Tour {self.nbr_tour}:\nJoueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
-            print("égalité")
-            self.nbr_tour+=1
+            while j1_carte.valeur == j2_carte.valeur and not len(self.joueur1) == 0 and not len(self.joueur2) == 0:
+                print(f"Tour {self.nbr_tour}:\nJoueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
+                print("égalité")
+                self.nbr_tour+=1
 
-            try:
-                j1_carte, j2_carte = self.action_jeu(pile_centrale)
-                print(f"Joueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
-            except:
-                return
+                try:
+                    j1_carte, j2_carte = self.action_jeu()
+                    print(f"Joueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
+                except:
+                    return
 
-            try:
-                j1_carte, j2_carte = self.action_jeu(pile_centrale)
-                print(f"Joueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
-            except:
-                return
+                try:
+                    j1_carte, j2_carte = self.action_jeu()
+                    print(f"Joueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
+                except:
+                    return
 
         if j1_carte.valeur < j2_carte.valeur:
             print(f"Tour {self.nbr_tour}:\nJoueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
             print("joueur 2 gagne la manche")
-
+            self.state = 2
             ran=random.randint(0,10)
             if ran>=5:
-                for i in range(len(pile_centrale)):
-                    self.joueur2.enfiler(pile_centrale.depiler())
+                for i in range(len(self.pile_centrale)):
+                    self.joueur2.enfiler(self.pile_centrale.depiler())
             else:
-                for i in range(0,len(pile_centrale),2):
-                    varrr= pile_centrale.depiler()
-                    self.joueur2.enfiler(pile_centrale.depiler())
+                for i in range(0,len(self.pile_centrale),2):
+                    varrr= self.pile_centrale.depiler()
+                    self.joueur2.enfiler(self.pile_centrale.depiler())
                     self.joueur2.enfiler(varrr)
         elif j2_carte.valeur < j1_carte.valeur:
+            self.state = 1
             print(f"Tour {self.nbr_tour}:\n Joueur 1 : {j1_carte}    Joueur 2 : {j2_carte}")
             print("joueur 1 gagne la manche")
-            for i in range(len(pile_centrale)):
-                self.joueur1.enfiler(pile_centrale.depiler())
+            for i in range(len(self.pile_centrale)):
+                self.joueur1.enfiler(self.pile_centrale.depiler())
         else:
             return
             raise SystemError("personne n'a gagner le tour tu n'a rien a faire la")
