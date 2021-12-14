@@ -80,7 +80,7 @@ while run:
         if main.game.state == 1:
             screen.blit(draw.defaultFont.render("Joueur 1 Gagne", True, (0,0,0)), ((W//2)-100,H//2))
 
-        screen.blit(draw.defaultFont.render(f"nbre de tour : {n}", True, (0,0,0)),(W//2,H//2))
+        screen.blit(draw.defaultFont.render(f"nbre de tour : {n}", True, (0,0,0)),(W//2,(H//2)+75))
 
         pygame.display.flip()
 
